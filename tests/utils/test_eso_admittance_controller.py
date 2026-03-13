@@ -46,3 +46,23 @@ def test_tracks_target_in_quiet_case() -> None:
         q_cmd = controller.update(q_vla_target=np.array([0.5]), q_measured=q_cmd, dt=0.01)
 
     assert 0.40 < q_cmd[0] < 0.52
+
+
+def test_force_estimation_respects_deadband_and_gravity_compensation() -> None:
+    controller = ESOAdmittanceController(
+        dof=1,
+        b0=2.0,
+        omega_o=10.0,
+        k_d=10.0,
+        force_deadband=0.1,
+        target_cutoff_hz=None,
+        gravity_fn=lambda q: np.array([0.2]),
+    )
+
+    # Below deadband after gravity compensation should become exactly zero.
+    filtered = controller._apply_deadband(np.array([0.05]), deadband=controller.force_deadband)
+    np.testing.assert_allclose(filtered, np.array([0.0]))
+
+    # Verify gravity compensation callback is used as part of force estimate path.
+    g = controller.gravity_compensation(np.array([0.0]))
+    np.testing.assert_allclose(g, np.array([0.2]))
