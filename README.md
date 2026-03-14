@@ -15,7 +15,7 @@ This project solves the fundamental "Compliance Paradox" in Embodied AI: achievi
 | <img src="media/readme/baseline_rigid.gif" width="400"/> | <img src="media/readme/ours_compliant.gif" width="400"/> |
 | *Hard contact* | *High-bandwidth tracking in free space + butter-smooth yielding upon physical contact.* |
 
-*(Replace the paths above with your actual GIF links once recorded)*
+
 
 ## ✨ Key Features
 
